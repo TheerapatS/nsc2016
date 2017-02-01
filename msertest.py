@@ -28,40 +28,10 @@ def skeletonize(img):
 
 def find_skel(img, im, c):
     x = im.shape
-    # img = np.zeros((int(x[0]), int(x[1])), np.uint8)
-    # for i in range(0, len(region)):
-    #     img[region[i][1]][region[i][0]] = 255
     element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
     img = cv2.dilate(img, element, iterations=3)
     skel = skeletonize(img)
-    # print(skel)
-    # x = im.shape
-    #
-    # skel = np.zeros((int(x[0]), int(x[1])), np.uint8)
-    # saveimg = np.zeros ((int (x[0]), int (x[1])),np.uint8)
-    # size = np.size(skel)
-    # for i in range(0, len(region)):
-    #         saveimg[region[i][1]][region[i][0]] = 255
-    # # cv2.imwrite('F:/NSC/region.jpg', saveimg)
-    #
-    # img = saveimg
-    # element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
-    # done = False
-    #
-    # while (not done):
-    #     eroded = cv2.erode(img, element)
-    #     temp = cv2.dilate(eroded, element)
-    #     temp = cv2.subtract(img, temp)
-    #     skel = cv2.bitwise_or(skel, temp)
-    #     img = eroded.copy()
-    #
-    #     zeros = size - cv2.countNonZero(img)
-    #     if zeros == size:
-    #         done = True
     cv2.imshow(str(c), skel.astype(np.uint8) * 255)
-    # cv2.imwrite('F:/NSC/' + str(c) + '.jpg',skel.astype(np.uint8)*255)
-    # np.savetxt("F:/NSC/skel_list.txt", skel.clip(0, 255).astype(np.uint8), delimiter='\t')
-    # cv2.imwrite('F:/NSC/' + str(c) + '.jpg', img)
     c += 1
     tempimg = np.zeros((int(x[0] + 2), int(x[1] + 2)), np.uint8)
     for i in range(1, x[0]):
@@ -85,7 +55,6 @@ def find_skel(img, im, c):
                 if br == 1:
                     end_map[i - 1][j - 1] = 255
                     end_list.append([i - 1, j - 1])
-    # cv2.imshow(str(c + 75), end_map)
     return c, br_map, br_list, end_map, end_list, skel
 
 
@@ -101,7 +70,6 @@ def im_fill(gray):
 
 def get_txt(path):
     img = cv2.imread(path)
-    # print (img.shape)
     mser = cv2.MSER(9, int(0.000 * img.size / 3), int(0.05 * img.size / 3), 0.1)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Converting to GrayScale
     regions = mser.detect(gray, None)
@@ -110,7 +78,6 @@ def get_txt(path):
     for region in regions:
         for i in range(0, len(region)):
             im[region[i][1]][region[i][0]] = 255
-    # cv2.imwrite('F:/NSC/Sample/111111.jpg', im)  # Saving
     return im
 
 
@@ -128,7 +95,6 @@ def get_skel(path):
     mser = cv2.MSER(9, int(0.05 * img.size / 3), int(0.5 * img.size / 3), 0.1)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Converting to GrayScale
     regions = mser.detect(gray, None)
-    # print (len(regions))
     area2 = []
     x = img.shape
     im_filled = []
@@ -139,13 +105,11 @@ def get_skel(path):
             im[region[i][1]][region[i][0]] = 255
         temp = im_fill(im);
         im_filled.append(temp.copy())
-        # area2 = cv2.countNonZero(temp)
         area2.append(cv2.countNonZero(temp))
         contour2, hier2 = cv2.findContours(temp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         hull2 = cv2.convexHull(contour2[0])
         hull_area2 = cv2.contourArea(hull2)
         solidity_filled = area2[countwindows] / hull_area2
-        # print solidity_filled
         white_frame = 0.0
         for j in range(0, x[1] - 1):
             if im_filled[countwindows][0][j] == 255:
@@ -158,19 +122,16 @@ def get_skel(path):
             if im_filled[countwindows][j][x[1] - 1] == 255:
                 white_frame += 1
         frame = (2 * (x[0] + x[1])) - 4
-        percent = (float(white_frame) / frame) * 100.00
-        # cv2.imshow(str(countwindows + 100), im_filled[countwindows])
+        percent = (float(white_frame) / frame) * 100.0
         if solidity_filled < 0.5:
             if percent < 50.0:
                 count_im_isok.append(countwindows)
-                # cv2.imshow(str(countwindows + 100), im_filled[countwindows])
         countwindows += 1
     temp = []
     ind = -1
     if len(count_im_isok) == 1:
         cv2.imshow(str(countwindows + 300), im_filled[count_im_isok[0]])
-        __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
-        return img, skel,ratio_resize
+        ind = count_im_isok[0]
     else:
         for i in count_im_isok:
             temp.append(area2[i])
@@ -179,20 +140,29 @@ def get_skel(path):
             if area2[i] == temp[len(count_im_isok) - 1]:
                 ind = i
     if ind != -1:
+        element = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 7))
+        im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
+        im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
+
+        element = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 1))
+        im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
+        im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
+
+        element = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 3))
+        im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
+        im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
+
+        element = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 1))
+        im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
+        im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
+
         cv2.imshow(str(countwindows + 300), im_filled[ind])
         __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
-        return img, skel,ratio_resize
-    # hulls_fil = hulls[index]
-    # regions_fil = regions[index]
-    # countwindows, br_map, br_list,
-    # cv2.polylines(gray_img, hulls_fil, 1, (0, 0, 255), 2)
-    # cv2.imwrite('F:/NSC/kak.jpg', img)
-    # cv2.destroyAllWindows()
+        return img, skel, ratio_resize
     return 0, 0
 
 
 if __name__ == '__main__':
-    img, skel ,ratio = get_skel("F:/NSC/Sample/27.jpg")
-
+    img, skel, ratio = get_skel("F:/NSC/Sample/65.jpg")
 
     cv2.waitKey()
