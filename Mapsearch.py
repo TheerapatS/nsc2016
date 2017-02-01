@@ -3,13 +3,14 @@
 
 import urllib
 
+
 def mapsearch(name_place):
     lat = []
     lon = []
     key = "AIzaSyBOeGVakjKHKZ_QYZAWuu3fjYuIV6Dxomk"
     data_size = 0
     for address in name_place:
-        data_size = data_size + 1
+        data_size += 1
         name_place_encoded = urllib.quote_plus(address)
         link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded
         f = urllib.urlopen(link)
@@ -19,12 +20,9 @@ def mapsearch(name_place):
         lat_len = len(str_lat)
         str_lon = '<lng>'
         lon_len = len(str_lon)
-        position_lat = -1
-        position_lon = -1
-        position_location = -1
-        while (line != '</GeocodeResponse>'):
+        while line != '</GeocodeResponse>':
             position_location = line.find(str_location)
-            if (position_location != -1):
+            if position_location != -1:
                 break
             else:
                 line = f.readline()
@@ -34,9 +32,9 @@ def mapsearch(name_place):
         count = 0
         i = line[position_lat + lat_len + count]
         str_temp = ""
-        while (i != '<'):
+        while i != '<':
             str_temp += i
-            count = count + 1
+            count += 1
             i = line[position_lat + lat_len + count]
         a = float(str_temp)
         lat.append(float(str_temp))
@@ -46,9 +44,9 @@ def mapsearch(name_place):
         count = 0
         i = line[position_lon + lon_len + count]
         str_temp = ""
-        while (i != '<'):
+        while i != '<':
             str_temp += i
-            count = count + 1
+            count += 1
             i = line[position_lon + lon_len + count]
         lon.append(float(str_temp))
 
@@ -72,4 +70,3 @@ def mapsearch(name_place):
 
 if __name__ == '__main__':
     min_lat, max_lat, min_lon, max_lon = mapsearch(['ตลาดสดหนองหอย', 'มหาลัยเชียงใหม่'])
-
