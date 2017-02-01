@@ -82,3 +82,8 @@ def nominatim(name_place):
     else:
         print "Not Found!!"
     return min_lat, max_lat, min_lon, max_lon
+
+if __name__ == '__main__':
+    min_lat, max_lat, min_lon, max_lon = nominatim(['ตลาดสดหนองหอย'])
+    print min_lat
+    print max_lat

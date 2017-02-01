@@ -109,24 +109,26 @@ def get_skel(path):
         contour2, hier2 = cv2.findContours(temp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         hull2 = cv2.convexHull(contour2[0])
         hull_area2 = cv2.contourArea(hull2)
-        solidity_filled = area2[countwindows] / hull_area2
-        white_frame = 0.0
-        for j in range(0, x[1] - 1):
-            if im_filled[countwindows][0][j] == 255:
-                white_frame += 1
-            if im_filled[countwindows][x[0] - 1][j] == 255:
-                white_frame += 1
-        for j in range(1, x[0] - 2):
-            if im_filled[countwindows][j][0] == 255:
-                white_frame += 1
-            if im_filled[countwindows][j][x[1] - 1] == 255:
-                white_frame += 1
-        frame = (2 * (x[0] + x[1])) - 4
-        percent = (float(white_frame) / frame) * 100.0
-        if solidity_filled < 0.5:
-            if percent < 50.0:
-                count_im_isok.append(countwindows)
-        countwindows += 1
+        if hull_area2 != 0:
+            solidity_filled = area2[countwindows] / hull_area2
+            white_frame = 0.0
+            for j in range(0, x[1] - 1):
+                if im_filled[countwindows][0][j] == 255:
+                    white_frame += 1
+                if im_filled[countwindows][x[0] - 1][j] == 255:
+                    white_frame += 1
+            for j in range(1, x[0] - 2):
+                if im_filled[countwindows][j][0] == 255:
+                    white_frame += 1
+                if im_filled[countwindows][j][x[1] - 1] == 255:
+                    white_frame += 1
+            frame = (2 * (x[0] + x[1])) - 4
+            percent = (float(white_frame) / frame) * 100.0
+            cv2.imshow(str(countwindows + 100), im_filled[countwindows])
+            if solidity_filled < 0.5:
+                if percent < 50.0:
+                    count_im_isok.append(countwindows)
+            countwindows += 1
     temp = []
     ind = -1
     if len(count_im_isok) == 1:
@@ -163,6 +165,6 @@ def get_skel(path):
 
 
 if __name__ == '__main__':
-    img, skel, ratio = get_skel("F:/NSC/Sample/65.jpg")
+    img, skel, ratio = get_skel("F:/NSC/Sample/53.jpg")
 
     cv2.waitKey()

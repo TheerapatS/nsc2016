@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import urllib
+import time
 
 
 def mapsearch(name_place):
@@ -20,35 +21,41 @@ def mapsearch(name_place):
         lat_len = len(str_lat)
         str_lon = '<lng>'
         lon_len = len(str_lon)
+        position_location = -1
+        cline = 0
         while line != '</GeocodeResponse>':
+            cline+=1
             position_location = line.find(str_location)
             if position_location != -1:
                 break
             else:
                 line = f.readline()
-
-        line = f.readline()  # make lat
-        position_lat = line.find(str_lat)
-        count = 0
-        i = line[position_lat + lat_len + count]
-        str_temp = ""
-        while i != '<':
-            str_temp += i
-            count += 1
+            if cline > 200:
+                data_size -= 1
+                break
+        if position_location != -1:
+            line = f.readline()  # make lat
+            position_lat = line.find(str_lat)
+            count = 0
             i = line[position_lat + lat_len + count]
-        a = float(str_temp)
-        lat.append(float(str_temp))
+            str_temp = ""
+            while i != '<':
+                str_temp += i
+                count += 1
+                i = line[position_lat + lat_len + count]
+            a = float(str_temp)
+            lat.append(float(str_temp))
 
-        line = f.readline()  # make lon
-        position_lon = line.find(str_lon)
-        count = 0
-        i = line[position_lon + lon_len + count]
-        str_temp = ""
-        while i != '<':
-            str_temp += i
-            count += 1
+            line = f.readline()  # make lon
+            position_lon = line.find(str_lon)
+            count = 0
             i = line[position_lon + lon_len + count]
-        lon.append(float(str_temp))
+            str_temp = ""
+            while i != '<':
+                str_temp += i
+                count += 1
+                i = line[position_lon + lon_len + count]
+            lon.append(float(str_temp))
 
     lat.sort()
     lon.sort()
@@ -69,4 +76,4 @@ def mapsearch(name_place):
 
 
 if __name__ == '__main__':
-    min_lat, max_lat, min_lon, max_lon = mapsearch(['ตลาดสดหนองหอย', 'มหาลัยเชียงใหม่'])
+    min_lat, max_lat, min_lon, max_lon = mapsearch(['เกหดเสหกาดเย', 'มหาลัยเชียงใหม่','.here','LeCoqjOr'])

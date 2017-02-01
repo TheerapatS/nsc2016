@@ -1,5 +1,8 @@
-from osmapi import OsmApi
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 
+from osmapi import OsmApi
+from Mapsearch import mapsearch
 
 def ad_mat(min_lat, max_lat, min_lon, max_lon):
     ad_Matrix = []
@@ -46,5 +49,17 @@ def ad_mat(min_lat, max_lat, min_lon, max_lon):
                 temp_ar.append(0)
         ad_Matrix.append(temp_ar)
         temp_ar = []
+    print node
+    print ad_Matrix
+    with open("output.txt", "w") as f:
+        f.write(str(ad_Matrix.shape) + "\r\n")
+        f.write(str(ad_Matrix) + "\r\n")
+        for node in ad_Matrix:
+            f.write("{} {}\r\n".format(node[0], node[1].encode("utf8")))
 
     return node, way, ad_Matrix
+
+if __name__ == '__main__':
+    min_lat, max_lat, min_lon, max_lon = mapsearch(['ตลาดสดหนองหอย', 'มหาลัยเชียงใหม่'])
+    print min_lat
+    node, way, ad_Matrix = ad_mat(min_lat, max_lat, min_lon, max_lon)
