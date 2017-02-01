@@ -159,7 +159,7 @@ def get_skel(path):
                 white_frame += 1
         frame = (2 * (x[0] + x[1])) - 4
         percent = (float(white_frame) / frame) * 100.00
-        cv2.imshow(str(countwindows + 100), im_filled[countwindows])
+        # cv2.imshow(str(countwindows + 100), im_filled[countwindows])
         if solidity_filled < 0.5:
             if percent < 50.0:
                 count_im_isok.append(countwindows)
@@ -167,33 +167,32 @@ def get_skel(path):
         countwindows += 1
     temp = []
     ind = -1
-    print count_im_isok
     if len(count_im_isok) == 1:
         cv2.imshow(str(countwindows + 300), im_filled[count_im_isok[0]])
         __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
-        return img, skel
+        return img, skel,ratio_resize
     else:
         for i in count_im_isok:
             temp.append(area2[i])
         temp.sort()
-        print area2[1]
-        print temp
         for i in count_im_isok:
             if area2[i] == temp[len(count_im_isok) - 1]:
                 ind = i
     if ind != -1:
         cv2.imshow(str(countwindows + 300), im_filled[ind])
         __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
-        return img, skel
+        return img, skel,ratio_resize
     # hulls_fil = hulls[index]
     # regions_fil = regions[index]
     # countwindows, br_map, br_list,
     # cv2.polylines(gray_img, hulls_fil, 1, (0, 0, 255), 2)
     # cv2.imwrite('F:/NSC/kak.jpg', img)
-    cv2.waitKey(0)
     # cv2.destroyAllWindows()
     return 0, 0
 
 
 if __name__ == '__main__':
-    img, skel = get_skel("F:/NSC/Sample/26.jpg")
+    img, skel ,ratio = get_skel("F:/NSC/Sample/27.jpg")
+
+
+    cv2.waitKey()
