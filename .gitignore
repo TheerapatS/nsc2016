@@ -48,3 +48,6 @@ Temporary Items
 *.xml
 .idea/.idea.rar
 *.iml
+*.jpg
+*.txt
+sdf.py

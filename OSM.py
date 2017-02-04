@@ -128,6 +128,6 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
 
 
 if __name__ == '__main__':
-    min_lat, max_lat, min_lon, max_lon = mapsearch(
+    result = mapsearch(
         ['ตลาดสดหนองหอย', 'ลุงรัตน์ไก่อบฟาง', 'big ben', 'การเคหะชุมชน เชียงใหม่', 'มหาวิทยาลัยเชียงใหม่'])
-    ic_mat(min_lat, max_lat, min_lon, max_lon)
+    ic_mat(result[1][0],result[1][1],result[1][2],result[1][3])
