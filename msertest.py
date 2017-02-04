@@ -32,6 +32,7 @@ def find_skel(img, im, c):
     img = cv2.dilate(img, element, iterations=3)
     skel = skeletonize(img)
     cv2.imshow(str(c), skel.astype(np.uint8) * 255)
+    cv2.imwrite("skel_" + str(c) + ".jpg", skel.astype(np.uint8) * 255)
     c += 1
     tempimg = np.zeros((int(x[0] + 2), int(x[1] + 2)), np.uint8)
     for i in range(1, x[0]):
@@ -124,7 +125,7 @@ def get_skel(path):
                     white_frame += 1
             frame = (2 * (x[0] + x[1])) - 4
             percent = (float(white_frame) / frame) * 100.0
-            cv2.imshow(str(countwindows + 100), im_filled[countwindows])
+            # cv2.imshow(str(countwindows + 100), im_filled[countwindows])
             if solidity_filled < 0.5:
                 if percent < 50.0:
                     count_im_isok.append(countwindows)
@@ -132,7 +133,7 @@ def get_skel(path):
     temp = []
     ind = -1
     if len(count_im_isok) == 1:
-        cv2.imshow(str(countwindows + 300), im_filled[count_im_isok[0]])
+        # cv2.imshow(str(countwindows + 300), im_filled[count_im_isok[0]])
         ind = count_im_isok[0]
     else:
         for i in count_im_isok:
@@ -159,12 +160,14 @@ def get_skel(path):
         im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
 
         cv2.imshow(str(countwindows + 300), im_filled[ind])
+        cv2.imwrite(str(countwindows + 200)+".jpg", im_filled[ind])
         __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
+        # cv2.imwrite(str(countwindows + 400)+".jpg", skel)
         return img, skel, ratio_resize
     return 0, 0
 
 
 if __name__ == '__main__':
-    img, skel, ratio = get_skel("F:/NSC/Sample/53.jpg")
+    img, skel, ratio = get_skel("F:/NSC/Sample/51.jpg")
 
     cv2.waitKey()

@@ -8,6 +8,8 @@ import time
 def mapsearch(name_place):
     lat = []
     lon = []
+    lat_temp = []
+    lon_temp = []
     key = "AIzaSyBOeGVakjKHKZ_QYZAWuu3fjYuIV6Dxomk"
     data_size = 0
     for address in name_place:
@@ -24,7 +26,7 @@ def mapsearch(name_place):
         position_location = -1
         cline = 0
         while line != '</GeocodeResponse>':
-            cline+=1
+            cline += 1
             position_location = line.find(str_location)
             if position_location != -1:
                 break
@@ -45,6 +47,7 @@ def mapsearch(name_place):
                 i = line[position_lat + lat_len + count]
             a = float(str_temp)
             lat.append(float(str_temp))
+            lat_temp.append(float(str_temp))
 
             line = f.readline()  # make lon
             position_lon = line.find(str_lon)
@@ -56,14 +59,37 @@ def mapsearch(name_place):
                 count += 1
                 i = line[position_lon + lon_len + count]
             lon.append(float(str_temp))
+            lon_temp.append(float(str_temp))
 
-    lat.sort()
-    lon.sort()
+    lat_temp.sort()
+    lon_temp.sort()
 
-    min_lat = lat[0]
-    max_lat = lat[data_size - 1]
-    min_lon = lon[0]
-    max_lon = lon[data_size - 1]
+    if data_size % 2 == 1:
+        lat_med = lat_temp[data_size / 2]
+        lon_med = lon_temp[data_size / 2]
+    else:
+        lat_med = (lat_temp[data_size / 2] + lat_temp[(data_size / 2) - 1]) / 2
+        lon_med = (lon_temp[data_size / 2] + lon_temp[(data_size / 2) - 1]) / 2
+
+
+    lat_temp = []
+    lon_temp = []
+    rangee = 0.05
+    if data_size > 2:
+        for i in range(0, data_size - 1):
+            if ((lat[i] - lat_med < rangee) & (lat_med - lat[i] < rangee))&((lon[i] - lon_med < rangee) & (lon_med - lon[i] < rangee)) :
+                lat_temp.append(lat[i])
+                lon_temp.append(lon[i])
+
+    data_size = len(lon_temp)
+
+    lat_temp.sort()
+    lon_temp.sort()
+
+    min_lat = lat_temp[0]
+    max_lat = lat_temp[data_size - 1]
+    min_lon = lon_temp[0]
+    max_lon = lon_temp[data_size - 1]
 
     delta_lat = max_lat - min_lat
     delta_lon = max_lon - min_lon
@@ -76,4 +102,7 @@ def mapsearch(name_place):
 
 
 if __name__ == '__main__':
-    min_lat, max_lat, min_lon, max_lon = mapsearch(['เกหดเสหกาดเย', 'มหาลัยเชียงใหม่','.here','LeCoqjOr'])
+    min_lat, max_lat, min_lon, max_lon = mapsearch(['ตลาดสดหนองหอย', 'ลุงรัตน์ไก่อบฟาง', 'big ben','การเคหะชุมชน เชียงใหม่','มหาวิทยาลัยเชียงใหม่'])
+    print (min_lon+max_lon) / 2
+    print (min_lat + max_lat) / 2
+
