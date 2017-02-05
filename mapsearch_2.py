@@ -15,8 +15,9 @@ def mapsearch(name_place):
     key = "AIzaSyBOeGVakjKHKZ_QYZAWuu3fjYuIV6Dxomk"
     data_size = 0
     for address in name_place:
+        lat_temp_position = []
+        lon_temp_position = []
         temp_position = []
-        data_size += 1
         name_place_encoded = urllib.quote_plus(address)
         link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded
         f = urllib.urlopen(link)
@@ -37,44 +38,49 @@ def mapsearch(name_place):
             cline += 1
             position_location = line.find(str_location)
             if position_location != -1:
-                break
+                line = f.readline()  # make lat
+                position_lat = line.find(str_lat)
+                count = 0
+                i = line[position_lat + lat_len + count]
+                str_temp = ""
+                while i != '<':
+                    str_temp += i
+                    count += 1
+                    i = line[position_lat + lat_len + count]
+                data_size += 1
+                lat.append(float(str_temp))
+                lat_temp.append(float(str_temp))
+                lat_temp_position.append(float(str_temp))
+
+                line = f.readline()  # make lon
+                position_lon = line.find(str_lon)
+                count = 0
+                i = line[position_lon + lon_len + count]
+                str_temp = ""
+                while i != '<':
+                    str_temp += i
+                    count += 1
+                    i = line[position_lon + lon_len + count]
+                lon.append(float(str_temp))
+                lon_temp.append(float(str_temp))
+                lon_temp_position.append(float(str_temp))
             else:
                 line = f.readline()
+            position_location = -1
             if cline > 400:
-                data_size -= 1
+                position_location = -1
                 break
-        if position_location != -1:
-            line = f.readline()  # make lat
-            position_lat = line.find(str_lat)
-            count = 0
-            i = line[position_lat + lat_len + count]
-            str_temp = ""
-            while i != '<':
-                str_temp += i
-                count += 1
-                i = line[position_lat + lat_len + count]
-            lat.append(float(str_temp))
-            lat_temp.append(float(str_temp))
-            temp_position.append(float(str_temp))
+        temp_position.append(lat_temp_position)
+        temp_position.append(lon_temp_position)
+        temp_position.append(address)
+        temp_temp.append(temp_position)
 
-            line = f.readline()  # make lon
-            position_lon = line.find(str_lon)
-            count = 0
-            i = line[position_lon + lon_len + count]
-            str_temp = ""
-            while i != '<':
-                str_temp += i
-                count += 1
-                i = line[position_lon + lon_len + count]
-            lon.append(float(str_temp))
-            lon_temp.append(float(str_temp))
-            temp_position.append(float(str_temp))
-
-            temp_position.append(address)
-            temp_temp.append(temp_position)
     result.append(temp_temp)
+    print lat_temp
+    print lon_temp
     lat_temp.sort()
     lon_temp.sort()
+
     if data_size % 2 == 1:
         lat_med = lat_temp[data_size / 2]
         lon_med = lon_temp[data_size / 2]
@@ -86,7 +92,7 @@ def mapsearch(name_place):
     lon_temp = []
     rangee = 0.05
     if data_size > 2:
-        for i in range(0, data_size - 1):
+        for i in range(0, data_size):
             if ((lat[i] - lat_med < rangee) & (lat_med - lat[i] < rangee)) & (
                         (lon[i] - lon_med < rangee) & (lon_med - lon[i] < rangee)):
                 lat_temp.append(lat[i])
@@ -96,7 +102,6 @@ def mapsearch(name_place):
 
     lat_temp.sort()
     lon_temp.sort()
-
     min_lat = lat_temp[0]
     max_lat = lat_temp[data_size - 1]
     min_lon = lon_temp[0]
@@ -117,10 +122,15 @@ def mapsearch(name_place):
     temp.append(min_lon)
 
     result.append(temp)
-
+    print lat_med
+    print lon_med
+    print min_lat
+    print max_lat
+    print min_lon
+    print max_lon
     return result
 
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่่', '.Here','LeCoqj’Or','ตลาดหนองหอย'])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล','ตลาดสดหนองหอย'])

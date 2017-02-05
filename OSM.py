@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from osmapi import OsmApi
-from Mapsearch import mapsearch
+from mapsearch_2 import mapsearch
 import numpy as np
 
 
@@ -15,8 +15,10 @@ def find_ind(id, node):
 
 def ic_mat(min_lat, max_lat, min_lon, max_lon):
     ic_Matrix = []
-    ad_Matrix = []
-
+    # print min_lat
+    # print max_lat
+    # print min_lon
+    # print max_lon
     def initialize_twodlist(data):
         new = []
         for i in range(0, 10):
@@ -33,7 +35,7 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
     way = []
     node_size = 0
     way_size = 0
-    wat_size_limit = 2
+    wat_size_limit = 1
     for i in data:
         if i[u'type'] == "node":
             if ((i[u'data'][u'lat'] > min_lat) & (i[u'data'][u'lat'] < max_lat) & (i[u'data'][u'lon'] > min_lon) & (
@@ -48,13 +50,12 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
             for j in i[u'data'][u'nd']:
                 c += 1
             if c > wat_size_limit:
-                if u'building' in i[u'data'][u'tag']:
-                    __1 = 0
-                else:
-                    way.append(
-                        {'number': way_size + 1, 'id': i[u'data'][u'id'], 'tag': i[u'data'][u'tag'],
-                         'nd': i[u'data'][u'nd']})
-                    way_size += 1
+                if u'highway' in i[u'data'][u'tag']:
+                    if (i[u'data'][u'tag'][u'highway'] != 'service') & (i[u'data'][u'tag'][u'highway'] != 'secondary_link') & (i[u'data'][u'tag'][u'highway'] != 'primary_link'):
+                        way.append(
+                            {'number': way_size + 1, 'id': i[u'data'][u'id'], 'tag': i[u'data'][u'tag'],
+                            'nd': i[u'data'][u'nd']})
+                        way_size += 1
 
     temp_ar = []
     for i in node:
@@ -104,8 +105,6 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
     node_size -= len(delete_list)
 
     node = np.delete(node, delete_list, axis=0)
-    print len (ad_Matrix)
-    print len (ad_Matrix[0])
     ad_file = open("AD_Matrix.txt", "w")
     ic_file = open("IC_Matrix.txt", "w")
     node_file = open("Node.txt", "w")
@@ -129,5 +128,9 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['ตลาดสดหนองหอย', 'ลุงรัตน์ไก่อบฟาง', 'big ben', 'การเคหะชุมชน เชียงใหม่', 'มหาวิทยาลัยเชียงใหม่'])
-    ic_mat(result[1][0],result[1][1],result[1][2],result[1][3])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะชุมชน เชียงใหม่', '.Here','LeCoqj’Or','ตลาดหนองหอย'])
+    for i in result[0]:
+        print i[0]
+        print i[1]
+        print i[2]
+    ic_mat(result[1][1],result[1][0],result[1][3],result[1][2])
