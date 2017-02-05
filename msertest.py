@@ -31,8 +31,8 @@ def find_skel(img, im, c):
     element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
     img = cv2.dilate(img, element, iterations=3)
     skel = skeletonize(img)
-    cv2.imshow(str(c), skel.astype(np.uint8) * 255)
-    cv2.imwrite("skel_" + str(c) + ".jpg", skel.astype(np.uint8) * 255)
+    # cv2.imshow(str(c), skel.astype(np.uint8) * 255)
+    # cv2.imwrite("skel_" + str(c) + ".jpg", skel.astype(np.uint8) * 255)
     c += 1
     tempimg = np.zeros((int(x[0] + 2), int(x[1] + 2)), np.uint8)
     for i in range(1, x[0]):
@@ -159,8 +159,8 @@ def get_skel(path):
         im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
         im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
 
-        cv2.imshow(str(countwindows + 300), im_filled[ind])
-        cv2.imwrite(str(countwindows + 200)+".jpg", im_filled[ind])
+        # cv2.imshow(str(countwindows + 300), im_filled[ind])
+        # cv2.imwrite(str(countwindows + 200)+".jpg", im_filled[ind])
         __1, __2, __3, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
         # cv2.imwrite(str(countwindows + 400)+".jpg", skel)
         return img, skel, ratio_resize
@@ -168,6 +168,6 @@ def get_skel(path):
 
 
 if __name__ == '__main__':
-    img, skel, ratio = get_skel("F:/NSC/Sample/12.jpg")
+    img, skel, ratio = get_skel("F:/NSC/Sample/68.jpg")
 
     cv2.waitKey()

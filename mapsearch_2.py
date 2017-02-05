@@ -22,7 +22,7 @@ def mapsearch(name_place):
         link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded
         f = urllib.urlopen(link)
         c = urllib.urlopen(link)
-        ffile = open("fff"+str(data_size)+".txt", "w")
+        ffile = open("fff" + str(data_size) + ".txt", "w")
         ffile.write(str(address) + "\r\n")
         for i in c:
             ffile.write(str(i) + "\r\n")
@@ -76,8 +76,8 @@ def mapsearch(name_place):
         temp_temp.append(temp_position)
 
     result.append(temp_temp)
-    print lat_temp
-    print lon_temp
+    # print lat_temp
+    # print lon_temp
     lat_temp.sort()
     lon_temp.sort()
 
@@ -122,19 +122,17 @@ def mapsearch(name_place):
     temp.append(min_lon)
 
     result.append(temp)
-    print lat_med
-    print lon_med
-    print min_lat
-    print max_lat
-    print min_lon
-    print max_lon
+    # print lat_med
+    # print lon_med
+    # print min_lat
+    # print max_lat
+    # print min_lon
+    # print max_lon
 
-    lat_temp = []
-    lon_temp = []
     for i in result[0]:
         delete_list = []
         for j in range(len(i[0])):
-            if not((min_lat < i[0][j] < max_lat) & (min_lon < i[1][j]< max_lon)):
+            if not ((min_lat < i[0][j] < max_lat) & (min_lon < i[1][j] < max_lon)):
                 delete_list.append(j)
         delete_list.sort(reverse=True)
         for k in delete_list:
@@ -145,5 +143,4 @@ def mapsearch(name_place):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล','ตลาดสดหนองหอย'])
-
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ตลาดสดหนองหอย'])
