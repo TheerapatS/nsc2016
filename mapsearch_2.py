@@ -128,9 +128,22 @@ def mapsearch(name_place):
     print max_lat
     print min_lon
     print max_lon
+
+    lat_temp = []
+    lon_temp = []
+    for i in result[0]:
+        delete_list = []
+        for j in range(len(i[0])):
+            if not((min_lat < i[0][j] < max_lat) & (min_lon < i[1][j]< max_lon)):
+                delete_list.append(j)
+        delete_list.sort(reverse=True)
+        for k in delete_list:
+            i[0].pop(k)
+            i[1].pop(k)
     return result
 
 
 if __name__ == '__main__':
     result = mapsearch(
         ['สื่แยกหนองหอย', 'ถนนมหิ่ดล','ตลาดสดหนองหอย'])
+

@@ -168,6 +168,6 @@ def get_skel(path):
 
 
 if __name__ == '__main__':
-    img, skel, ratio = get_skel("F:/NSC/Sample/51.jpg")
+    img, skel, ratio = get_skel("F:/NSC/Sample/12.jpg")
 
     cv2.waitKey()
