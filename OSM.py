@@ -15,6 +15,7 @@ def find_ind(id, node):
 
 def ic_mat(min_lat, max_lat, min_lon, max_lon):
     ic_Matrix = []
+
     # print min_lat
     # print max_lat
     # print min_lon
@@ -51,10 +52,12 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
                 c += 1
             if c > wat_size_limit:
                 if u'highway' in i[u'data'][u'tag']:
-                    if (i[u'data'][u'tag'][u'highway'] != 'service') & (i[u'data'][u'tag'][u'highway'] != 'secondary_link') & (i[u'data'][u'tag'][u'highway'] != 'primary_link'):
+                    if (i[u'data'][u'tag'][u'highway'] != 'service') & (
+                                i[u'data'][u'tag'][u'highway'] != 'secondary_link') & (
+                                i[u'data'][u'tag'][u'highway'] != 'primary_link'):
                         way.append(
                             {'number': way_size + 1, 'id': i[u'data'][u'id'], 'tag': i[u'data'][u'tag'],
-                            'nd': i[u'data'][u'nd']})
+                             'nd': i[u'data'][u'nd']})
                         way_size += 1
 
     temp_ar = []
@@ -93,9 +96,9 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
                             ad_Matrix[y][x] = 1
                         break
     delete_list = []
-    for i in range(0, node_size-1):
+    for i in range(0, node_size - 1):
         c = 0
-        for j in range(0, node_size-1):
+        for j in range(0, node_size - 1):
             if ad_Matrix[i][j] == 1:
                 c += 1
         if c == 0:
@@ -128,9 +131,10 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะชุมชน เชียงใหม่', '.Here','LeCoqj’Or','ตลาดหนองหอย'])
-    for i in result[0]:
-        print i[0]
-        print i[1]
-        print i[2]
-    ic_mat(result[1][1],result[1][0],result[1][3],result[1][2])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะชุมชน เชียงใหม่', '.Here', 'LeCoqj’Or',
+         'ตลาดหนองหอย'])
+    # for i in result[0]:
+    #     print i[0]
+    #     print i[1]
+    #     print i[2]
+    ic_mat(result[1][1], result[1][0], result[1][3], result[1][2])

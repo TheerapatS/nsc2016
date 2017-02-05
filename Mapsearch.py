@@ -20,11 +20,6 @@ def mapsearch(name_place):
         name_place_encoded = urllib.quote_plus(address)
         link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded
         f = urllib.urlopen(link)
-        c = urllib.urlopen(link)
-        ffile = open("fff"+str(data_size)+".txt", "w")
-        ffile.write(str(address) + "\r\n")
-        for i in c:
-            ffile.write(str(i) + "\r\n")
         line = f.readline()
         str_location = '<location>'
         str_lat = '<lat>'
@@ -123,4 +118,5 @@ def mapsearch(name_place):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่่', '.Here','LeCoqj’Or','ตลาดหนองหอย'])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่่', '.Here', 'LeCoqj’Or',
+         'ตลาดหนองหอย'])
