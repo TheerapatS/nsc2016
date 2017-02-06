@@ -131,10 +131,12 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะชุมชน เชียงใหม่', '.Here', 'LeCoqj’Or',
-         'ตลาดหนองหอย'])
-    # for i in result[0]:
-    #     print i[0]
-    #     print i[1]
-    #     print i[2]
-    ic_mat(result[1][1], result[1][0], result[1][3], result[1][2])
+        ['โรงแรม32', 'ร๊านอาหารแกงร็อนบ้านสวน', 'ชู้รานอาหารน๊องพ่อุ๊ค', 'ฟู้', 'ศูนฮ์ประซุมนานาชาติเชิ่ยงใหม่'])
+    if result == 0:
+        print "Error"
+    else :
+        for i in result[0]:
+            print i[0]
+            print i[1]
+            print i[2]
+        ic_mat(result[1][1], result[1][0], result[1][3], result[1][2])
