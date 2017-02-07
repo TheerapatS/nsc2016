@@ -145,10 +145,9 @@ def mapsearch(name_place):
                     i[1].pop(k)
             return result
         else :
-            print "Not found!! Because error data has equal to half of data size"
-            return 0
+            raise Exception('Error Message')
     else :
-        print "Error"
+        raise Exception('Error Message')
 
 
 if __name__ == '__main__':

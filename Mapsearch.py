@@ -15,6 +15,7 @@ def mapsearch(name_place):
     key = "AIzaSyBOeGVakjKHKZ_QYZAWuu3fjYuIV6Dxomk"
     data_size = 0
     for address in name_place:
+        count_three = 0
         temp_position = []
         data_size += 1
         name_place_encoded = urllib.quote_plus(address)
@@ -29,6 +30,8 @@ def mapsearch(name_place):
         position_location = -1
         cline = 0
         while line != '</GeocodeResponse>':
+            if count_three >= 3 :
+                break
             cline += 1
             position_location = line.find(str_location)
             if position_location != -1:
@@ -64,9 +67,11 @@ def mapsearch(name_place):
             lon.append(float(str_temp))
             lon_temp.append(float(str_temp))
             temp_position.append(float(str_temp))
-
+            count_three += 1
             temp_position.append(address)
             temp_temp.append(temp_position)
+
+    print len(temp_temp)
     result.append(temp_temp)
     lat_temp.sort()
     lon_temp.sort()
