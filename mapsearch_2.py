@@ -4,7 +4,7 @@
 import urllib
 
 
-def mapsearch(name_place,scope_area='เชียงใหม่'):
+def mapsearch(name_place, scope_area='เชียงใหม่'):
     lat = []
     lon = []
     lat_temp = []
@@ -19,7 +19,7 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
         lon_temp_position = []
         temp_position = []
         name_place_encoded = urllib.quote_plus(address)
-        link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded + " " +scope_area_encode
+        link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded + " " + scope_area_encode
         f = urllib.urlopen(link)
         c = urllib.urlopen(link)
         ffile = open("fff" + str(data_size) + ".txt", "w")
@@ -74,15 +74,11 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
         temp_position.append(lat_temp_position)
         temp_position.append(lon_temp_position)
         temp_position.append(address)
-        # print lat_temp_position
-        # print lon_temp_position
-        # print address
+
         temp_temp.append(temp_position)
 
     if data_size > 0:
         result.append(temp_temp)
-        # print lat_temp
-        # print lon_temp
         lat_temp.sort()
         lon_temp.sort()
 
@@ -104,8 +100,6 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
                     lat_temp.append(lat[i])
                     lon_temp.append(lon[i])
                 else:
-                    # print lat[i]
-                    # print lon[i]
                     error_size += 1
         if data_size % 2 == 1:
             temp = data_size + 1
@@ -132,12 +126,6 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
             temp = [max_lat, min_lat, max_lon, min_lon]
 
             result.append(temp)
-            # print lat_med
-            # print lon_med
-            # print min_lat
-            # print max_lat
-            # print min_lon
-            # print max_lon
 
             for i in result[0]:
                 delete_list = []
@@ -150,11 +138,9 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
                     i[1].pop(k)
             return result
         else:
-            print "A"
             return 0
             # raise Exception('Error Message')
     else:
-        print "B"
         return 0
         # raise Exception('Error Message')
 
@@ -162,5 +148,5 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
 if __name__ == '__main__':
     result = mapsearch(
         ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่', '.Here', 'LeCoqj’Or',
-         'ตลาดหนองหอย'],'เชียงใหม่')
-    print result
+         'ตลาดหนองหอย'], 'เชียงใหม่')
+    print result[1]

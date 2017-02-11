@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from osmapi import OsmApi
-from mapsearch_2 import mapsearch
+from mapsearch_3 import mapsearch
 import numpy as np
 
 
@@ -17,7 +17,6 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
     ic_Matrix = []
 
     MyApi = OsmApi()
-
     data = MyApi.Map(min_lon, min_lat, max_lon, max_lat)
     node = []
     way = []

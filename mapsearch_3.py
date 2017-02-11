@@ -15,7 +15,7 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
     url = "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}"
     geo = []
     for name in name_place:
-        res = requests.get(url.format(name + " " + scope_area , key))
+        res = requests.get(url.format(name + " " + scope_area, key))
         json = res.json()
         location = []
         if json['status'] == "OK":
@@ -70,7 +70,7 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
     lat_temp = []
     lon_temp = []
     error_size = 0
-    rangee = 0.05
+    rangee = 0.02
     if data_size > 2:
         for i in range(0, data_size):
             if ((lat[i] - lat_med < rangee) & (lat_med - lat[i] < rangee)) & (
@@ -79,10 +79,12 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
                 lon_temp.append(lon[i])
             else:
                 error_size += 1
+
     if data_size % 2 == 1:
         temp = data_size + 1
     else:
         temp = data_size
+
     if error_size < temp / 2:
         data_size = len(lon_temp)
 
@@ -118,7 +120,9 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
     else:
         return 0
 
+
 if __name__ == '__main__':
     result = mapsearch(
         ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่', '.Here', 'LeCoqj’Or',
-         'ตลาดหนองหอย'],'เชียงใหม่')
+         'ตลาดหนองหอย'], 'เชียงใหม่')
+    print result
