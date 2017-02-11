@@ -16,22 +16,9 @@ def find_ind(id, node):
 def osm_mat(min_lat, max_lat, min_lon, max_lon):
     ic_Matrix = []
 
-    # print min_lat
-    # print max_lat
-    # print min_lon
-    # print max_lon
-    def initialize_twodlist(data):
-        new = []
-        for i in range(0, 10):
-            for j in range(0, 10):
-                new.append(data)
-            new = []
-
     MyApi = OsmApi()
-    # print MyApi.NodeGet(123)
-    data = []
-    data = MyApi.Map(min_lon, min_lat, max_lon, max_lat)
 
+    data = MyApi.Map(min_lon, min_lat, max_lon, max_lat)
     node = []
     way = []
     node_size = 0
@@ -59,7 +46,6 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
                             {'number': way_size + 1, 'id': i[u'data'][u'id'], 'tag': i[u'data'][u'tag'],
                              'nd': i[u'data'][u'nd']})
                         way_size += 1
-
     temp_ar = []
     for i in node:
         for j in way:
@@ -73,14 +59,12 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
                 temp_ar.append(0)
         ic_Matrix.append(temp_ar)
         temp_ar = []
-
     ad_Matrix = []
     for i in range(0, node_size):
         temp_ar = []
         for j in range(0, node_size):
             temp_ar.append(0)
         ad_Matrix.append(temp_ar)
-
     for i in way:
         for j in i['nd']:
             temp = 0
@@ -95,7 +79,6 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
                             ad_Matrix[x][y] = 1
                             ad_Matrix[y][x] = 1
                         break
-
     delete_list = []
     for i in range(0, node_size - 1):
         c = 0
@@ -107,55 +90,21 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
     ad_Matrix = np.delete(ad_Matrix, delete_list, axis=0)
     ad_Matrix = np.delete(ad_Matrix, delete_list, axis=1)
     node_size -= len(delete_list)
-
     cross = []
     for i in ad_Matrix:
         temp = 0
         for j in i:
             temp += j
         cross.append(temp)
-    print cross
-    print len(cross)
-    print node_size
-
     new_cross = [
-        [[node[i]['lat'], node[i]['lon'], cross[i]]]
+        [[node[i]['lat'], node[i]['lon']], cross[i]]
         for i in range(node_size) if cross[i] > 2
         ]
-    for n in new_cross:
-        print n
     return new_cross
-    # node = np.delete(node, delete_list, axis=0)
-    # ad_file = open("AD_Matrix.txt", "w")
-    # ic_file = open("IC_Matrix.txt", "w")
-    # node_file = open("Node.txt", "w")
-    # way_file = open("way.txt", "w")
-    # for i in ad_Matrix:
-    #     for j in i:
-    #         ad_file.write(str(j) + ",")
-    #     ad_file.write("\r\n")
-    # ic_file.write(" Node Size(row) = " + str(node_size) + " Way Size(col) = " + str(way_size) + "\r\n")
-    # for i in ic_Matrix:
-    #     ic_file.write(str(i) + "\r\n")
-    # for i in node:
-    #     node_file.write(str(i) + "\r\n")
-    # for i in way:
-    #     way_file.write(str(i) + "\r\n")
-    # ic_file.close()
-    # node_file.close()
-    # way_file.close()
-    # ad_file.close()
 
 
 if __name__ == '__main__':
     result = mapsearch(
         ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่', '.Here', 'LeCoqj’Or',
          'ตลาดหนองหอย'])
-    if result == 0:
-        print "Error"
-    else:
-        for i in result[0]:
-            print i[0]
-            print i[1]
-            print i[2]
-        osm_mat(result[1][1], result[1][0], result[1][3], result[1][2])
+    osm_mat(result[1][1], result[1][0], result[1][3], result[1][2])
