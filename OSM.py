@@ -13,7 +13,7 @@ def find_ind(id, node):
     return -1
 
 
-def ic_mat(min_lat, max_lat, min_lon, max_lon):
+def osm_mat(min_lat, max_lat, min_lon, max_lon):
     ic_Matrix = []
 
     # print min_lat
@@ -96,7 +96,6 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
                             ad_Matrix[y][x] = 1
                         break
 
-
     delete_list = []
     for i in range(0, node_size - 1):
         c = 0
@@ -113,30 +112,39 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
     for i in ad_Matrix:
         temp = 0
         for j in i:
-            temp+=j
+            temp += j
         cross.append(temp)
     print cross
+    print len(cross)
+    print node_size
 
-    node = np.delete(node, delete_list, axis=0)
-    ad_file = open("AD_Matrix.txt", "w")
-    ic_file = open("IC_Matrix.txt", "w")
-    node_file = open("Node.txt", "w")
-    way_file = open("way.txt", "w")
-    for i in ad_Matrix:
-        for j in i:
-            ad_file.write(str(j) + ",")
-        ad_file.write("\r\n")
-    ic_file.write(" Node Size(row) = " + str(node_size) + " Way Size(col) = " + str(way_size) + "\r\n")
-    for i in ic_Matrix:
-        ic_file.write(str(i) + "\r\n")
-    for i in node:
-        node_file.write(str(i) + "\r\n")
-    for i in way:
-        way_file.write(str(i) + "\r\n")
-    ic_file.close()
-    node_file.close()
-    way_file.close()
-    ad_file.close()
+    new_cross = [
+        [[node[i]['lat'], node[i]['lon'], cross[i]]]
+        for i in range(node_size) if cross[i] > 2
+        ]
+    for n in new_cross:
+        print n
+    return new_cross
+    # node = np.delete(node, delete_list, axis=0)
+    # ad_file = open("AD_Matrix.txt", "w")
+    # ic_file = open("IC_Matrix.txt", "w")
+    # node_file = open("Node.txt", "w")
+    # way_file = open("way.txt", "w")
+    # for i in ad_Matrix:
+    #     for j in i:
+    #         ad_file.write(str(j) + ",")
+    #     ad_file.write("\r\n")
+    # ic_file.write(" Node Size(row) = " + str(node_size) + " Way Size(col) = " + str(way_size) + "\r\n")
+    # for i in ic_Matrix:
+    #     ic_file.write(str(i) + "\r\n")
+    # for i in node:
+    #     node_file.write(str(i) + "\r\n")
+    # for i in way:
+    #     way_file.write(str(i) + "\r\n")
+    # ic_file.close()
+    # node_file.close()
+    # way_file.close()
+    # ad_file.close()
 
 
 if __name__ == '__main__':
@@ -145,9 +153,9 @@ if __name__ == '__main__':
          'ตลาดหนองหอย'])
     if result == 0:
         print "Error"
-    else :
+    else:
         for i in result[0]:
             print i[0]
             print i[1]
             print i[2]
-        ic_mat(result[1][1], result[1][0], result[1][3], result[1][2])
+        osm_mat(result[1][1], result[1][0], result[1][3], result[1][2])

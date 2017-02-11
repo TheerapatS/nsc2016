@@ -74,9 +74,9 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
         temp_position.append(lat_temp_position)
         temp_position.append(lon_temp_position)
         temp_position.append(address)
-        print lat_temp_position
-        print lon_temp_position
-        print address
+        # print lat_temp_position
+        # print lon_temp_position
+        # print address
         temp_temp.append(temp_position)
 
     if data_size > 0:
@@ -104,8 +104,8 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
                     lat_temp.append(lat[i])
                     lon_temp.append(lon[i])
                 else:
-                    print lat[i]
-                    print lon[i]
+                    # print lat[i]
+                    # print lon[i]
                     error_size += 1
         if data_size % 2 == 1:
             temp = data_size + 1
