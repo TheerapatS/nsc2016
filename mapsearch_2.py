@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import urllib
-import time
 
 
-def mapsearch(name_place):
+def mapsearch(name_place,scope_area='เชียงใหม่'):
     lat = []
     lon = []
     lat_temp = []
@@ -14,12 +13,13 @@ def mapsearch(name_place):
     temp_temp = []
     key = "AIzaSyBOeGVakjKHKZ_QYZAWuu3fjYuIV6Dxomk"
     data_size = 0
+    scope_area_encode = urllib.quote_plus(scope_area)
     for address in name_place:
         lat_temp_position = []
         lon_temp_position = []
         temp_position = []
         name_place_encoded = urllib.quote_plus(address)
-        link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded
+        link = 'https://maps.googleapis.com/maps/api/geocode/xml?key=' + key + '&new_forward_geocoder=true&address=' + name_place_encoded + " " +scope_area_encode
         f = urllib.urlopen(link)
         c = urllib.urlopen(link)
         ffile = open("fff" + str(data_size) + ".txt", "w")
@@ -35,7 +35,7 @@ def mapsearch(name_place):
         count_three = 0
         cline = 0
         while line != '</GeocodeResponse>':
-            if count_three >= 3 :
+            if count_three >= 3:
                 break
             cline += 1
             position_location = line.find(str_location)
@@ -74,9 +74,12 @@ def mapsearch(name_place):
         temp_position.append(lat_temp_position)
         temp_position.append(lon_temp_position)
         temp_position.append(address)
+        print lat_temp_position
+        print lon_temp_position
+        print address
         temp_temp.append(temp_position)
 
-    if data_size > 0 :
+    if data_size > 0:
         result.append(temp_temp)
         # print lat_temp
         # print lon_temp
@@ -100,9 +103,15 @@ def mapsearch(name_place):
                             (lon[i] - lon_med < rangee) & (lon_med - lon[i] < rangee)):
                     lat_temp.append(lat[i])
                     lon_temp.append(lon[i])
-                else :
+                else:
+                    print lat[i]
+                    print lon[i]
                     error_size += 1
-        if error_size < data_size/2 :
+        if data_size % 2 == 1:
+            temp = data_size + 1
+        else:
+            temp = data_size
+        if error_size < temp / 2:
             data_size = len(lon_temp)
 
             lat_temp.sort()
@@ -115,16 +124,12 @@ def mapsearch(name_place):
             delta_lat = max_lat - min_lat
             delta_lon = max_lon - min_lon
 
-            min_lat = min_lat - (0.25 * delta_lat)
-            max_lat = max_lat + (0.25 * delta_lat)
-            min_lon = min_lon - (0.25 * delta_lon)
-            max_lon = max_lon + (0.25 * delta_lon)
+            min_lat -= 0.25 * delta_lat
+            max_lat += 0.25 * delta_lat
+            min_lon -= 0.25 * delta_lon
+            max_lon += 0.25 * delta_lon
 
-            temp = []
-            temp.append(max_lat)
-            temp.append(min_lat)
-            temp.append(max_lon)
-            temp.append(min_lon)
+            temp = [max_lat, min_lat, max_lon, min_lon]
 
             result.append(temp)
             # print lat_med
@@ -144,13 +149,18 @@ def mapsearch(name_place):
                     i[0].pop(k)
                     i[1].pop(k)
             return result
-        else :
-            raise Exception('Error Message')
-    else :
-        raise Exception('Error Message')
+        else:
+            print "A"
+            return 0
+            # raise Exception('Error Message')
+    else:
+        print "B"
+        return 0
+        # raise Exception('Error Message')
 
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['โรงแรม32', 'ร๊านอาหารแกงร็อนบ้านสวน', 'ชู้รานอาหารน๊องพ่อุ๊ค', 'ฟู้', 'ศูนฮ์ประซุมนานาชาติเชิ่ยงใหม่'])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่', '.Here', 'LeCoqj’Or',
+         'ตลาดหนองหอย'],'เชียงใหม่')
     print result

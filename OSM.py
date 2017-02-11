@@ -95,6 +95,8 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
                             ad_Matrix[x][y] = 1
                             ad_Matrix[y][x] = 1
                         break
+
+
     delete_list = []
     for i in range(0, node_size - 1):
         c = 0
@@ -106,6 +108,14 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
     ad_Matrix = np.delete(ad_Matrix, delete_list, axis=0)
     ad_Matrix = np.delete(ad_Matrix, delete_list, axis=1)
     node_size -= len(delete_list)
+
+    cross = []
+    for i in ad_Matrix:
+        temp = 0
+        for j in i:
+            temp+=j
+        cross.append(temp)
+    print cross
 
     node = np.delete(node, delete_list, axis=0)
     ad_file = open("AD_Matrix.txt", "w")
@@ -131,7 +141,8 @@ def ic_mat(min_lat, max_lat, min_lon, max_lon):
 
 if __name__ == '__main__':
     result = mapsearch(
-        ['โรงแรม32', 'ร๊านอาหารแกงร็อนบ้านสวน', 'ชู้รานอาหารน๊องพ่อุ๊ค', 'ฟู้', 'ศูนฮ์ประซุมนานาชาติเชิ่ยงใหม่'])
+        ['สื่แยกหนองหอย', 'ถนนมหิ่ดล', 'ธัซ์\'gลุงรตนไกอบฟาง', 'การเคหะซุมซนเชียงใหม่', '.Here', 'LeCoqj’Or',
+         'ตลาดหนองหอย'])
     if result == 0:
         print "Error"
     else :
