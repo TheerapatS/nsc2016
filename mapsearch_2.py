@@ -96,7 +96,7 @@ def mapsearch(name_place,scope_area='เชียงใหม่'):
         lat_temp = []
         lon_temp = []
         error_size = 0
-        rangee = 0.05
+        rangee = 0.02
         if data_size > 2:
             for i in range(0, data_size):
                 if ((lat[i] - lat_med < rangee) & (lat_med - lat[i] < rangee)) & (
