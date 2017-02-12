@@ -21,14 +21,13 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
         if json['status'] == "OK":
             for lo in json['results']:
                 location.append(lo['geometry']['location'])
-        else:
-            res = requests.get(url.format(name, key))
-            json = res.json()
-            if json['status'] == "OK":
-                for lo in json['results']:
-                    # print lo['formatted_address'].count(scope_area.decode("utf8"))
-                    # if lo['formatted_address'].count(scope_area.decode("utf8"))>0:
-                    location.append(lo['geometry']['location'])
+        res = requests.get(url.format(name, key))
+        json = res.json()
+        if json['status'] == "OK":
+            for lo in json['results']:
+                # print lo['formatted_address'].count(scope_area.decode("utf8"))
+                # if lo['formatted_address'].count(scope_area.decode("utf8"))>0:
+                location.append(lo['geometry']['location'])
         if len(location) > 0:
             geo.append([location, name])
     temp_temp = []
