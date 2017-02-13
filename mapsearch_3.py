@@ -117,7 +117,7 @@ def mapsearch(name_place, scope_area='เชียงใหม่'):
                 i[1].pop(k)
         return result
     else:
-        return 0
+        raise Exception("Error in mapsearch")
 
 
 if __name__ == '__main__':
