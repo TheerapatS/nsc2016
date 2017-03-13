@@ -117,7 +117,7 @@ def find_skel(img, im, c, n_pic):
     img = cv2.dilate(img, element, iterations=3)
     skel = skeletonize(img)
     # cv2.imshow(str(c), skel.astype(np.uint8) * 255)
-    cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "skel.jpg", skel.astype(np.uint8) * 255)
+    # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "skel.jpg", skel.astype(np.uint8) * 255)
     c += 1
     tempimg = np.zeros((int(x[0] + 2), int(x[1] + 2)), np.uint8)
     for i in range(1, x[0] + 1):
@@ -141,7 +141,7 @@ def find_skel(img, im, c, n_pic):
                 if br == 1:
                     end_map[i - 1][j - 1] = 255
                     end_list.append([i - 1, j - 1])
-    cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "end01.jpg", end_map.astype(np.uint8))
+    # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "end01.jpg", end_map.astype(np.uint8))
     return c, br_map, br_list, end_map, end_list, skel
 
 
@@ -245,14 +245,14 @@ def get_skel(path, n_pic):
         im_filled[ind] = cv2.erode(im_filled[ind], element, iterations=1)
         im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
 
-        cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "_road mark.jpg", im_filled[ind])
+        # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "_road mark.jpg", im_filled[ind])
         __1, br_map, br_list, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows, n_pic)
 
         # print end_list
         # print br_list
         # print skel.shape
         # print end_map.shape
-        cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "br01.jpg", br_map.astype(np.uint8))
+        # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "br01.jpg", br_map.astype(np.uint8))
         # print end_list
         for i in end_list:
             skel = del_end(i, br_map, skel)
@@ -265,7 +265,7 @@ def get_skel(path, n_pic):
                 else:
                     tempimg[i][j] = 0
 
-        cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "_skel_cut.jpg", skel.astype(np.uint8) * 255)
+        # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "_skel_cut.jpg", skel.astype(np.uint8) * 255)
         return img, skel, ratio_resize
 
     return 0, 0, 0
