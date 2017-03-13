@@ -99,7 +99,7 @@ def osm_mat(min_lat, max_lat, min_lon, max_lon):
         [[node[i]['lat'], node[i]['lon']], cross[i]]
         for i in range(node_size) if cross[i] > 2
         ]
-    return new_cross
+    return new_cross, ad_Matrix
 
 
 if __name__ == '__main__':
