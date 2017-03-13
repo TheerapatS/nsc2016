@@ -111,7 +111,7 @@ def skeletonize(img):
     return img
 
 
-def find_skel(img, im, c, n_pic):
+def find_skel(img, im, c):
     x = im.shape
     element = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
     img = cv2.dilate(img, element, iterations=3)
@@ -168,7 +168,7 @@ def get_txt(path):
     return im
 
 
-def get_skel(path, n_pic):
+def get_skel(path):
     countwindows = 0
     img = cv2.imread(path)
     shape = img.shape
@@ -246,7 +246,7 @@ def get_skel(path, n_pic):
         im_filled[ind] = cv2.dilate(im_filled[ind], element, iterations=1)
 
         # cv2.imwrite("F:/NSC/Sample/" + str(n_pic) + "_road mark.jpg", im_filled[ind])
-        __1, br_map, br_list, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows, n_pic)
+        __1, br_map, br_list, end_map, end_list, skel = find_skel(im_filled[ind], img, countwindows)
 
         # print end_list
         # print br_list
@@ -274,5 +274,5 @@ def get_skel(path, n_pic):
 if __name__ == '__main__':
     # for n_pic in range(20,65):
     #      img, skel, ratio = get_skel("F:/NSC/Sample/"+ str(n_pic)+".jpg",n_pic)
-    img, skel, ratio = get_skel("F:/NSC/Sample/" + str(61) + ".jpg", 61)
+    img, skel, ratio = get_skel("F:/NSC/Sample/" + str(61) + ".jpg")
     cv2.waitKey()
